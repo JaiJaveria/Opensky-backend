@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
 import os
+from datetime import datetime, timezone
 
 app = FastAPI()
 
@@ -77,4 +78,5 @@ def get_flights():
             "airline": airline
         })
 
-    return {"time": time, "flights": flights}
+    return {"time": time.strftime("%H:%M UTC"), "time_diff_from_now": (datetime.now(tz=timezone.utc) - time).total_seconds() //60, "flights": flights}
+    
